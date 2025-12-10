@@ -306,6 +306,11 @@ cleanup() {
       if [ -n "$DIRECTORY" ] ; then
         einfo "Not unmounting $MNTPOINT as you requested me to install into a directory of your own choice."
       else
+        if [ -n "$MOUNT_BOOT" ] ; then
+          einfo "Unmounting $MNTPOINT/boot"
+          try_umount 3 "${MNTPOINT}"/boot
+        fi
+
         einfo "Unmounting $MNTPOINT"
         try_umount 3 "$MNTPOINT"
       fi
@@ -1942,6 +1947,10 @@ umount_chroot() {
   fi
 
   try_umount 3 "${MNTPOINT}"/run/udev
+
+  if [ -n "$MOUNT_BOOT" ] ; then
+    try_umount 3 "${MNTPOINT}"/boot
+  fi
 
   if [ -n "$PARTITION" ] ; then
      try_umount 3 "$MNTPOINT"
