@@ -1044,7 +1044,9 @@ else # if not running automatic installation display configuration and prompt fo
    echo "   Target:          $TARGET"
 
    # do not display if MNTPOINT is the default one
-   case "$MNTPOINT" in /mnt/debootstrap*) ;; *) echo "   Mount point:     $MNTPOINT" ;; esac
+   [ -n "$MOUNT_BOOT" ] && echo "   Boot partition:  $MOUNT_BOOT"
+
+    case "$MNTPOINT" in /mnt/debootstrap*) ;; *) echo "   Mount point:     $MNTPOINT" ;; esac
 
    if [ -n "$VIRTUAL" ] && [ "$GRUB_INSTALL" = 'yes' ] ; then
       echo "   Install grub:    yes"
@@ -1403,7 +1405,7 @@ mount_target() {
 
 # mount the new partition or if it's a directory do nothing at all {{{
 mount_boot_target() {
-  if [ -n "$MOUNT_BOOT" ] ; then
+  if [ -z "$MOUNT_BOOT" ] ; then
      einfo "/boot is not on a separate partition, nothing to mount."
   else
      if grep -q "$MOUNT_BOOT" /proc/mounts ; then
