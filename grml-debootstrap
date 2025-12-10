@@ -1293,6 +1293,11 @@ mkfs() {
       mkfs.fat -F32 -n "EFI" "$EFI_TARGET"
     fi
 
+    if [ -n "$VIRTUAL" ] && [ -n "$MOUNT_BOOT" ]; then
+      einfo "Creating ext4 filesystem on $MOUNT_BOOT"
+      mkfs.ext4 "$MOUNT_BOOT"
+    fi
+
     # make sure /dev/disk/by-uuid/... is up2date, otherwise grub
     # will fail to detect the uuid in the chroot
     if [ -n "$VIRTUAL" ] ; then

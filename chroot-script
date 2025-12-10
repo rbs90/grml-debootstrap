@@ -475,6 +475,11 @@ EOF
     echo "Warning: couldn't identify target UUID for rootfs, your /etc/fstab might be incomplete."
   fi
 
+if [ -n "$MOUNT_BOOT" ] ; then
+  UUID_BOOT="$(blkid -o value -s UUID "$MOUNT_BOOT")"
+  echo "UUID=$UUID_BOOT  /boot          ext4    defaults,nodev,nosuid,noexec,fmask=0177,dmask=0077    0      2" >> /etc/fstab
+fi
+
 if [ -n "$EFI" ] ; then
   UUID_EFI="$(blkid -o value -s UUID "$EFI")"
   echo "UUID=$UUID_EFI  /boot/efi       vfat    umask=0077      0       1" >> /etc/fstab
