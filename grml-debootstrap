@@ -1411,12 +1411,9 @@ mount_boot_target() {
      if grep -q "$MOUNT_BOOT" /proc/mounts ; then
         ewarn "$MOUNT_BOOT already mounted, continuing anyway." ; eend 0
      else
-       if ! [ -d "${MNTPOINT}/boot" ] ; then
-          [ -n "$VIRTUAL" ] || mkdir -p "${MNTPOINT}/boot"
-       fi
        einfo "Mounting $MOUNT_BOOT to $MNTPOINT/boot"
        mkdir -p "$MNTPOINT/boot"
-       mount -o rw,suid,dev "$MOUNT_BOOT" "$MNTPOINT/boot"
+       mount -o rw "$MOUNT_BOOT" "$MNTPOINT/boot"
        eend $?
      fi
   fi
@@ -1545,6 +1542,10 @@ umount_target() {
   fi
 
   try_umount 3 "${MNTPOINT}"/boot/efi
+
+  if [ -n "$MOUNT_BOOT" ] ; then
+    try_umount 3 "${MNTPOINT}"/boot
+  fi
 
   try_umount 3 "${MNTPOINT}"
   kpartx -d "${ORIG_TARGET}" >/dev/null
