@@ -1014,6 +1014,8 @@ if [ -n "$INTERACTIVE" ] ; then
    "
    [ -n "$TARGET" ]  && INFOTEXT="$INFOTEXT
    Target:          $TARGET"
+   [ -n "$MOUNT_BOOT" ]  && INFOTEXT="$INFOTEXT
+   Boot partition:  $MOUNT_BOOT"
    [ -n "$GRUB" ]    && INFOTEXT="$INFOTEXT
    Install grub:    $GRUB"
    [ -n "$EFI" ]    && INFOTEXT="$INFOTEXT
